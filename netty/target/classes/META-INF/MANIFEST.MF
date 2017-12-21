@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Built-By: Administrator
+Class-Path: . lib/netty-all-5.0.0.Alpha2.jar lib/jboss-marshalling-1.4
+ .11.Final.jar lib/jboss-marshalling-serial-1.4.11.Final.jar lib/log4j
+ -1.2.17.jar
+Build-Jdk: 1.8.0_91
+Created-By: Maven Integration for Eclipse
+Main-Class: clonegod.netty01.NettyServer
+
