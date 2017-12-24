@@ -1,0 +1,4 @@
+Zab - ZooKeeper Atomic Broadcast 原子消息广播
+
+Paxos 算法能完美地达到分布式系统的一致性，但由于较为复杂，在实际工程上不是很合适。
+Zab 协议借鉴了 Paxos 的思想，并进行了改进，以满足工程上的实际需求。
