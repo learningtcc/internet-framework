@@ -3,7 +3,7 @@
 
 ### 规划集群环境
 ip | 角色 | 模式
------------- | -------------
+------------ | ------------- | -------------
 192.168.1.201 | nameServer1, brokerServer1 | Master1
 192.168.1.202 | nameServer2, brokerServer2 | Master2
 
