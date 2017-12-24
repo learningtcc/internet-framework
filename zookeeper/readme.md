@@ -120,7 +120,8 @@
 	# 192.168.1.203
 		Mode: leader
 
-## 使用客户端连接zookeeper
+## 使用zkCli.sh连接zookeeper
+	# 在任意zk节点上登陆都可以
 	/usr/local/zookeeper/bin/zkCli.sh
 	# 输出
 		[zk: localhost:2181(CONNECTED) 0] ls /
