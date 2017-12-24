@@ -121,7 +121,7 @@
 		Mode: leader
 
 ## 使用客户端连接zookeeper
-	/usr/local/zookeeper/bin/zkCli
+	/usr/local/zookeeper/bin/zkCli.sh
 	# 输出
 		[zk: localhost:2181(CONNECTED) 0] ls /
 		[zookeeper]
