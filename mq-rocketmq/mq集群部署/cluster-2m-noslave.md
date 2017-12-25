@@ -187,6 +187,8 @@ ip | 角色 | 模式
 
 ## RocketMQ Console
 ##### 在tomcat中部署rocketmq-console.war
+浏览器访问:  [http://192.168.1.201:8080/rocketmq-console/](http://192.168.1.201:8080/rocketmq-console/)
+
 	# windows上传到192.168.1.201
 	scp rocketmq-console.war root@192.168.1.201:/usr/local/tomcat/webapps
 	
