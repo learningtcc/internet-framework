@@ -1,4 +1,4 @@
-package clonegod.rocketmq.multiconsumer;
+package clonegod.rocketmq.cluster;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;

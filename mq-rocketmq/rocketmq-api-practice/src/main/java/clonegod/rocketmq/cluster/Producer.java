@@ -1,4 +1,4 @@
-package clonegod.rocketmq.multiconsumer;
+package clonegod.rocketmq.cluster;
 
 import com.alibaba.rocketmq.client.exception.MQClientException;
 import com.alibaba.rocketmq.client.producer.DefaultMQProducer;

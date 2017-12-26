@@ -29,8 +29,14 @@
 
 	* > 丰富的API提供各种场景的解决方案
 		基于电商的各种场景需求而定制的产品
-
+	
 	* > 提供两种消费端消费模型：
+			consumer集群消费-消费端水平扩展
+				同组的consumer分摊所订阅topic上的消息，每条消息仅被1个consumer消费
+			consumer广播消费-不同系统对同一个消息的处理方式不同
+				同一条消息会推送给同组的每一个consumer
+
+	* > 提供两种消费端消费拉取方式：
 		push -> 智能型broker+哑consumer
 			broker负责推送消息，consumer只管消费
 			Consumer使用：DefaultMQPushConsumer
@@ -38,10 +44,6 @@
 			consumer主动从broker拉取消息，并维护已消费消息的offset
 			Consumer使用：DefaultMQPullConsumer
 			类似kafka的消息消费方式，由消费端通过拉取方式完成消息的消费？
-
-	* > 集群消费-消费端水平扩展
-		多个consumer同属于一个Group
-		加入新的consumer到Group即可分摊压力
 
 	* > 支持消息的有序消费（保证严格的消息顺序）
 		producer-单线程顺序发送，且发送到同一个队列
