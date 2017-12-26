@@ -5,7 +5,7 @@
 		2、多主多从模型 + 异步复制	2master-2slave-async 实时性要求高的场景下使用
 		3、多主多从模型 + 同步复制	2master-2slave-sync	最严苛的场景下使用
 		主从复制的两种持久化机制：
-			异步复制 - 性能好
+			异步复制 - 性能好（消息从Master以异步方式复制到Slave）
 			同步双写 - 适合对消息可靠性要求极高的场合，比如设计到money的应用
 
 	* 亿级消息堆积能力（缓解消费端压力）
@@ -17,6 +17,11 @@
 
 	* 完善的消息重试机制，确保消息在流转过程中不丢失
 		消息确认机制
+		producer端的消息重试 
+			producer.setRetryTimesWhenSendFailed(10);
+		consumer端的消息重试
+			网络异常导致broker推送消息到consumer失败的重试-消费者宕机
+			消费端程序异常导致的重试
 
 	* 丰富的API提供各种场景的解决方案
 		基于电商的各种场景需求而定制的产品
@@ -24,9 +29,11 @@
 	* 提供两种消费端消费模型：
 		push -> 智能型broker+哑consumer
 			broker负责推送消息，consumer只管消费
+			Consumer使用：DefaultMQPushConsumer
 		pull -> 哑broker+智能型consumer
 			consumer主动从broker拉取消息，并维护已消费消息的offset
-			类似kafka的消息消费方式，由消费端通过拉取方式完成消息的消费
+			Consumer使用：DefaultMQPullConsumer
+			类似kafka的消息消费方式，由消费端通过拉取方式完成消息的消费？
 
 	* 集群消费-消费端水平扩展
 		多个consumer同属于一个Group
@@ -42,6 +49,9 @@
 
 	* 分布式事务的支持
 		开源版本不支持
+	
+	* 消息可能会重复推送给consumer
+		需要消费端进行业务逻辑上的去重处理，保证消息的幂等性！！！
 	
 
 ##

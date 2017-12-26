@@ -47,6 +47,8 @@ public class Producer {
         // com.alibaba.rocketmq.client.exception.MQClientException: No name server address, please set it.
         producer.setNamesrvAddr("192.168.1.201:9876;192.168.1.202:9876");
         
+        producer.setRetryTimesWhenSendFailed(10); // producer重试消息发送
+        
         producer.start();
         
         // 不能创建两个相同GroupName的Producer实例！
@@ -57,13 +59,13 @@ public class Producer {
         producer2.start();
 		*/
         
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10; i++) {
             try {
                 Message msg = new Message("TopicQuickStart",// topic - 消息所属主题
                     "TagA",// tag - 主题下的消息二次过滤
-                    ("Hello RocketMQ " + i).getBytes()// body - 消息实体
+                    ("Hello RocketMQ " + i + "@" + System.currentTimeMillis()).getBytes()// body - 消息实体
                         );
-                SendResult sendResult = producer.send(msg);
+                SendResult sendResult = producer.send(msg, 1000);
                 System.out.println(sendResult);
             }
             catch (Exception e) {
