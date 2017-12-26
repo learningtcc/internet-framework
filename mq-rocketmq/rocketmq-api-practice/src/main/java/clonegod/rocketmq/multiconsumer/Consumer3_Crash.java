@@ -19,16 +19,13 @@ import com.alibaba.rocketmq.common.protocol.heartbeat.MessageModel;
  */
 public class Consumer3_Crash {
 	
-	// 集群消费时，消费端的GroupName要相同
-	private static final String UNIQUE_CONSUMER_GROUP_NAME = "CONSUMER_cluster";
-	
 	public void start() {
         try {
-        	DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(UNIQUE_CONSUMER_GROUP_NAME);
+        	DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(Consumer1.CONSUMER_GROUP_NAME);
         	consumer.setNamesrvAddr("192.168.1.201:9876;192.168.1.202:9876");
         	consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
         	// 订阅Topic，可以指定Tag对消息进行二次过滤
-			consumer.subscribe("TopicQuickStart", "Tag1 || Tag2 || Tag3");
+			consumer.subscribe(Consumer1.TOPIC_NAME, "Tag1 || Tag2 || Tag3");
 			// 集群消费模式
 			consumer.setMessageModel(MessageModel.CLUSTERING);
 			// 消息分配策略-轮流发送到集群到每个consumer

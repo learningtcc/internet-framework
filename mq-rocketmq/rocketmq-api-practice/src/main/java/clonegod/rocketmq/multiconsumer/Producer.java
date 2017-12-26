@@ -7,11 +7,11 @@ import com.alibaba.rocketmq.common.message.Message;
 
 public class Producer {
 	
-	private static final String UNIQUE_PRODUCER_GROUP_NAME = "PRODUCER_quickstart";
+	private static final String PRODUCER_GROUP_NAME = "PRODUCER_cluster";
 	
     public static void main(String[] args) throws MQClientException, InterruptedException {
     	
-        DefaultMQProducer producer = new DefaultMQProducer(UNIQUE_PRODUCER_GROUP_NAME);
+        DefaultMQProducer producer = new DefaultMQProducer(PRODUCER_GROUP_NAME);
         producer.setNamesrvAddr("192.168.1.201:9876;192.168.1.202:9876");
         
         producer.setRetryTimesWhenSendFailed(10); // producer重试消息发送
@@ -20,7 +20,7 @@ public class Producer {
         
         for (int i = 0; i < 3; i++) {
             try {
-                Message msg = new Message("TopicQuickStart",// topic - 消息所属主题
+                Message msg = new Message(Consumer1.TOPIC_NAME,// topic - 消息所属主题
                     "Tag1",// tag - 主题下的消息二次过滤
                     ("Hello RocketMQ " + i + "@" + System.currentTimeMillis()).getBytes()// body - 消息实体
                         );
