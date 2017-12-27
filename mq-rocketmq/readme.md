@@ -124,7 +124,8 @@
 
 ## RocketMQ 架构设计
 -	**rocketmq-namesrv** 		提供协调服务
-	-	类似zookeeper
+	-	保存消息的TopicName，队列的运行时meta信息
+	-	类似SOA服务中的注册中心
 -	**rocketmq-broker** 		提供消息管理服务
 	-	接收producer的推送的消息
 	-	调用store接口完成消息的持久化
