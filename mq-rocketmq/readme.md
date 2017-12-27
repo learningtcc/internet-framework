@@ -52,6 +52,15 @@
 
 	* >>> 分布式事务的支持
 		开源版本不支持
+		1、全局性事务：
+			A数据源，B数据源，保证A，B数据源同时成功，同时失败
+			A事务，B事务，两个事务并行执行，由第三方来控制A，B事务都提交成功，或者都回滚。
+		2、分布式事务：
+			事务的完整执行涉及到多个系统，为了避免不同系统处理事务时发生强耦合，因此将事务拆分为多个小事务，在不同的系统执行---事务的分布式。
+			A事务成功提交后继续执行，向MQ推送消息，由相关的consumer来处理消息，此时启动B事务；
+			A事务不关心B事务的结果，只需要将消息推送到MQ，由MQ来保证将消息推送给相关的consumer；
+			如果A事务失败，则不向MQ推送消息；
+			如果A事务成功，B事务失败，则在处理B事务的系统上进行补偿，比如人工处理？
 
 	* > 提供两种消费端消费模型：
 		consumer集群消费-消费端水平扩展
@@ -76,8 +85,8 @@
 		实际底层是通过定期清除历史数据来解决存储容量的问题
 		broker上存储消息的三个相关文件:
 			commitlog 原始消息数据
-			consumerqueue	记录消息偏移量，便于快速定位消息在文件中的位置
-			index	索引文件
+			consumerqueue	消费队列，记录消息偏移量，便于快速定位消息
+			index	消息的索引文件
 
 	* > 丰富的API提供各种场景的解决方案
 		基于电商的各种场景需求而定制的产品
@@ -95,18 +104,46 @@
 ##
 
 ## RocketMQ 环境搭建
-
+-	双主模型
+-	两主两从 + 异步复制
+-	两主两从 + 同步双写
 
 ## RocketMQ 实战 - Broker
-
+-	接收消息
+-	推送消息
+-	消息重试
 
 ## RocketMQ 实战 - Producer
-
+-	推送消息到broker
 
 ## RocketMQ 实战 - Consumer
-
+-	push consumer 处理broker推送的消息
+-	pull consumer 主动从broker拉取消息
+-	concurrently	并发消费消息
+-	orderly	有序消费消息
 
 ## RocketMQ 架构设计
-
+-	**rocketmq-namesrv** 		提供协调服务
+	-	类似zookeeper
+-	**rocketmq-broker** 		提供消息管理服务
+	-	接收producer的推送的消息
+	-	调用store接口完成消息的持久化
+	-	推送消息给consumer
+	-	消息重试机制
+-	**rocketmq-client** 		客户端API
+	-	producer
+	-	consumer
+-	**rocketmq-remoting** 		数据通信服务
+	-	底层框架-netty
+	-	各种序列化的支持
+-	**rocketmq-store** 			数据存储服务
+	-	海量数据的存储
+	-	海量数据的高效检索
+-	**rocketmq-filtersrv**		支持客户端通过脚本定制复杂的消息过滤策略
+	-	直接在broker上进行精细的消息过滤
+	-	避免推送大量消息到consumer，而consumer仅仅只需要处理部分消息
+-	**rocketmq-common** 		公共方法
+-	**rocketmq-srvutil**	心跳、端口、连接
+-	**rocketmq-tools**	运维管理命令
 
 ## RocketMQ 管理员操作集群
