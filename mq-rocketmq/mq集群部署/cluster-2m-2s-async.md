@@ -62,7 +62,7 @@ ip | 角色 | 模式
 	#其他配置参考broker-a.properties，此处略
 
 ###### broker-b.properties	配置broker-b为Master节点
-# broker集群的名称
+	# broker集群的名称
 	brokerClusterName=DefaultCluster
 	
 	# 当前broker节点的名称
@@ -125,5 +125,5 @@ ip | 角色 | 模式
 	[root@node1 webapps]# cd rocketmq-console/WEB-INF/classes
 	[root@node1 classes]# vi config.properties
 		#rocketmq.namesrv.addr=127.0.0.1:9876
-		rocketmq.namesrv.addr=192.168.1.201:9876;192.168.1.202:9876;192.168.1.203:9876;192.168.1.204:9876;
+		rocketmq.namesrv.addr=192.168.1.201:9876;192.168.1.202:9876;192.168.1.203:9876;192.168.1.204:9876
 		throwDone=true
