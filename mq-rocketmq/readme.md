@@ -1,18 +1,21 @@
 # RocketMQ
 ##### RocketMQ是一款分布式、队列模型的消息中间件，具有以下特点：
 	* >>> 强调集群无单点问题，原生就是集群模式
-		1、双主模型	 			2master 
+		1、双主模型 2master 
 			- 大部分项目使用该模式已足够满足需求
 			- Master宕机后，其上的未被消费的消息不能被consumer端消费，缺失消息的实时消费
+		
 		2、多主多从模型 + 异步复制	2master-2slave-async 
 			-实时性要求高的场景下使用
 			-Master宕机后，由Slave节点推送消息到consumer，实现消息的实时消费
-			-在Master恢复前，Slave仅提供消息给consumer消费，Slave不能接收producer推送的新消息
+			-在Master恢复前，Slave仅提供消息给consumer消费，Slave只读不可写
 			-在Master恢复后，会同步slave上的消息消费状态，保持主从消息状态一致
 			-主从间消息复制使用异步方式，性能好，但Master宕机可能导致少量数据丢失
+		
 		3、多主多从模型 + 同步复制	2master-2slave-sync
 			- 最严苛的场景下使用
 			- 主从间消息复制使用同步方式，最安全，可确保主从间消息是完全一致的
+		
 		主从复制的两种持久化机制：
 			异步复制 - 性能好（消息从Master以异步方式复制到Slave）
 			同步双写 - 适合对消息可靠性要求极高的场合，比如设计到money的应用
