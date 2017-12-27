@@ -102,7 +102,7 @@ ip | 角色 | 模式
 	#flushCommitLogThoroughInterval=10000
 	#flushConsumeQueueThoroughInterval=60000
 	
-	#多master多slave模式下的数据同步策略
+	#节点的角色，以及master-slave模式下的数据同步策略
 	#- ASYNC_MASTER 异步复制Master
 	#- SYNC_MASTER 同步双写Master
 	#- SLAVE
