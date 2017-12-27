@@ -4,9 +4,9 @@
 		1、双主模型	 			2master - 大部分项目使用该模式已足够满足需求
 		2、多主多从模型 + 异步复制	2master-2slave-async 实时性要求高的场景下使用
 		3、多主多从模型 + 同步复制	2master-2slave-sync	最严苛的场景下使用
-			主从复制的两种持久化机制：
-				异步复制 - 性能好（消息从Master以异步方式复制到Slave）
-				同步双写 - 适合对消息可靠性要求极高的场合，比如设计到money的应用
+		主从复制的两种持久化机制：
+			异步复制 - 性能好（消息从Master以异步方式复制到Slave）
+			同步双写 - 适合对消息可靠性要求极高的场合，比如设计到money的应用
 
 	* >>> 完善的消息重试机制，确保消息在流转过程中不丢失
 		消息确认机制
@@ -20,10 +20,10 @@
 			consumer端的消息重试 - 确保消息从broker推送到消费端
 			网络异常导致broker推送消息到consumer失败的重试-消费者宕机
 			消费端程序异常导致的重试
-			说明：
-				先启动consumer订阅，再启动producer的情况下,
-				consumer只要不宕机，broker对其上的消息处理没有时间要求，
-				broker不会因为consumer长时间未返回消息确认而将消息发送到其它consumer。
+		说明：
+			先启动consumer订阅，再启动producer的情况下,
+			consumer只要不宕机，broker对其上的消息处理没有时间要求，
+			broker不会因为consumer长时间未返回消息确认而将消息发送到其它consumer。
 
 	* >>> 支持消息的有序消费（保证严格的消息顺序）
 		producer-单线程顺序发送，且发送到同一个队列
@@ -42,10 +42,10 @@
 		开源版本不支持
 
 	* > 提供两种消费端消费模型：
-			consumer集群消费-消费端水平扩展
-				同组的consumer分摊所订阅topic上的消息，每条消息仅被1个consumer消费
-			consumer广播消费-不同系统对同一个消息的处理方式不同
-				同一条消息会推送给同组的每一个consumer
+		consumer集群消费-消费端水平扩展
+			同组的consumer分摊所订阅topic上的消息，每条消息仅被1个consumer消费
+		consumer广播消费-不同系统对同一个消息的处理方式不同
+			同一条消息会推送给同组的每一个consumer
 
 	* > 提供两种消费端消费拉取方式：
 		push -> 智能型broker+哑consumer
