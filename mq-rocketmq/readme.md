@@ -123,6 +123,11 @@
 -	orderly	有序消费消息
 
 ## RocketMQ 架构设计
+	# 模块间的层次关系
+	上层：namesrv + broker + filtersrv + tool 
+	中间：client + store + srvutil 
+	底层：common + remoting
+
 -	**rocketmq-namesrv** 		提供协调服务
 	-	保存消息的TopicName，队列的运行时meta信息
 	-	类似SOA服务中的注册中心
@@ -135,7 +140,7 @@
 	-	producer
 	-	consumer
 -	**rocketmq-remoting** 		数据通信服务
-	-	底层框架-netty
+	-	底层框架-netty4
 	-	各种序列化的支持
 -	**rocketmq-store** 			数据存储服务
 	-	海量数据的存储
@@ -145,6 +150,6 @@
 	-	避免推送大量消息到consumer，而consumer仅仅只需要处理部分消息
 -	**rocketmq-common** 		公共方法
 -	**rocketmq-srvutil**	心跳、端口、连接
--	**rocketmq-tools**	运维管理命令
+-	**rocketmq-tools**	管理命令（服务器上运维管理）
 
 ## RocketMQ 管理员操作集群
