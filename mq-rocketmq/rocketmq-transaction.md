@@ -20,8 +20,11 @@ broker上实现的"未确认prepared消息的回查"机制被砍掉/闭源了!
 	a、producer本地事务执行成功，则返回COMMIT_MESSAGE
 	b、producer本地事务执行失败，则返回ROLLBACK_MESSAGE
 
+![Image of rocketmq-transaction](https://github.com/clonegod/tools/blob/master/images/rocketmq-transaction.png)
+
 如果producer发送的确认消息发送失败（网络原因或producer宕机）：
-则由**“未决事务，服务器回查客户端”**机制进行处理：
+
+则由“未决事务，服务器回查客户端”机制进行处理（未开源）：
 	
 	未决事务所对应的事务消息的状态为：LocalTransactionState.UNKNOW
 	在broker上通过定时job检查那些未收到确认的prepared消息，
