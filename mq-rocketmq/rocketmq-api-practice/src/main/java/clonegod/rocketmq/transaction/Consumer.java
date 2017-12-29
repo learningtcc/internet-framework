@@ -1,4 +1,4 @@
-package clonegod.rocketmq.cluster;
+package clonegod.rocketmq.transaction;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -7,32 +7,20 @@ import com.alibaba.rocketmq.client.consumer.DefaultMQPushConsumer;
 import com.alibaba.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import com.alibaba.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import com.alibaba.rocketmq.client.consumer.listener.MessageListenerConcurrently;
-import com.alibaba.rocketmq.client.consumer.rebalance.AllocateMessageQueueAveragelyByCircle;
 import com.alibaba.rocketmq.client.exception.MQClientException;
-import com.alibaba.rocketmq.common.consumer.ConsumeFromWhere;
 import com.alibaba.rocketmq.common.message.MessageExt;
-import com.alibaba.rocketmq.common.protocol.heartbeat.MessageModel;
 
-public class Consumer1 {
+public class Consumer {
 	
-	// 集群消费时，消费端的GroupName要相同
-	public static final String CONSUMER_GROUP_NAME = "CONSUMER_cluster";
-	public static final String TOPIC_NAME = "Topic-Cluster";
+	public static final String CONSUMER_GROUP_NAME = "CONSUMER_transaction";
+	public static final String TOPIC_NAME = "Topic-transaction";
 	
 	public void start() {
         try {
         	DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(CONSUMER_GROUP_NAME);
         	consumer.setNamesrvAddr("192.168.1.201:9876;192.168.1.202:9876");
-        	consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
-        	// 订阅Topic，可以指定Tag对消息进行二次过滤
-			consumer.subscribe(TOPIC_NAME, "Tag1 || Tag2 || Tag3");
-			// 集群消费模式
-			consumer.setMessageModel(MessageModel.CLUSTERING);
-			// 消息分配策略-轮流发送到集群到每个consumer
-			consumer.setAllocateMessageQueueStrategy(new AllocateMessageQueueAveragelyByCircle());
-			// 注册消息处理器
+			consumer.subscribe(TOPIC_NAME, "*");
 			consumer.registerMessageListener(new Listener());
-			// 启动consumer实例
 			consumer.start();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -40,9 +28,6 @@ public class Consumer1 {
         
 	}
 	
-	/**
-	 * MessageListenerConcurrently - 消费端并发消费（消息无序消费的场景）
-	 */
 	class Listener implements MessageListenerConcurrently {
 
 		@Override
@@ -54,11 +39,10 @@ public class Consumer1 {
          		String topic = msg.getTopic();
 					String msgBody = new String(msg.getBody(), StandardCharsets.UTF_8);
 					String tags = msg.getTags();
-					System.out.println(String.format("%s - Consumer1收到消息：topic=%s, msgBody=%s, tags=%s", 
+					System.out.println(String.format("%s - Consumer收到消息：topic=%s, msgBody=%s, tags=%s", 
 							Thread.currentThread().getName(), topic, msgBody, tags));
 				} catch (Exception e) {
 					e.printStackTrace();
-					// 消息处理异常时，告诉broker稍后重发消息。broker 内部重发机制： 1s 10s 30s 60s ...
 					return ConsumeConcurrentlyStatus.RECONSUME_LATER; 
 				}
          	
@@ -69,7 +53,7 @@ public class Consumer1 {
 	}
 
     public static void main(String[] args) throws InterruptedException, MQClientException {
-    	new Consumer1().start();
-        System.out.println("Consumer1 Started.");
+    	new Consumer().start();
+        System.out.println("Transaction Consumer Started.");
     }
 }
