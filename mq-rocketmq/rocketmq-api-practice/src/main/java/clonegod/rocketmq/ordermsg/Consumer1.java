@@ -38,6 +38,11 @@ public class Consumer1 {
 	
 	/**
 	 * MessageListenerOrderly - 消费端并发且有序消费
+	 * 有序消息的底层实现:
+	 * 	1、producer的保证：单线程顺序发送，将相同orderId的消息发送到broker的同一个队列上；
+	 * 	2、broker端的保证：保证将消息按顺序发送给consumer；
+	 *  3、consumer端的保证：相同orderId的消息，被绑定到一个专门的线程来进行处理；
+	 *  在consumer端通过线程池提供多线程并发处理不同orderId的消息，不会发生消息乱序处理。
 	 */
 	class Listener implements MessageListenerOrderly {
 
