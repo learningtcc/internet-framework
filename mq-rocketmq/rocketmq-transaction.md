@@ -50,9 +50,9 @@ producer端本地事务的执行结果与broker上的事务消息在整体上保
 
 从MQ到consumer，可能发生以下几种情况：
 
-	consumer发生异常：broker会重发消息给consumer
-	consumer宕机：broker会重发消息给同组的consumer
-	consumer处理失败/无效消息导致处理失败：consumer记录日志，通知producer消息有问题
+	consumer发生异常：broker会重发消息给consumer，需考虑重复消费+幂等性。
+	consumer宕机：broker会重发消息给同组的consumer，需考虑重复消费+幂等性。
+	consumer消费失败（异常消息）：consumer记录日志，通知producer消息有问题
 
 ### 总结
 	分布式事务第一部分，由producer和MQ结合起来保障本地事务与事务消息的一致性
