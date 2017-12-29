@@ -11,16 +11,18 @@
 
 本地事务执行完成后，向broker返回确认消息：
 
-	a、producer本地事务执行成功，则返回MESSAGE_COMMIT
-	b、producer本地事务执行失败，则返回MESSAGE_ROLLBACK
+	a、producer本地事务执行成功，则返回COMMIT_MESSAGE
+	b、producer本地事务执行失败，则返回ROLLBACK_MESSAGE
 
 如果producer发送的确认消息发送失败（网络原因或producer宕机）：
-则由“未决事务，服务器回查客户端”机制进行处理：
-
+则由**“未决事务，服务器回查客户端”**机制进行处理：
+	
+	未决事务所对应的事务消息的状态为：LocalTransactionState.UNKNOW
 	在broker上通过定时job检查那些未收到确认的prepared消息，
-	然后，broker向producer确认这些未决消息的本地事务执行结果是成功还是失败。
+	然后，broker向producer确认这些未决消息的本地事务执行结果是成功还是失败：
+	producer通过回调方法中的msg获取到事务消息的key，然后查询数据库，便可知道事务执行结果。
 
-这样保证了producer的本地事务和broker上的prepared消息处理逻辑的一致/正确性。
+这样就保证了producer的本地事务和broker上的prepared消息处理逻辑的一致/正确性。
 	
 producer端本地事务的执行结果与broker上的事务消息在整体上保持逻辑一致：
 
@@ -48,6 +50,10 @@ producer端本地事务的执行结果与broker上的事务消息在整体上保
 	分布式事务第二部分，由MQ的消息重试机制来保证消息被consumer消费到。
 	分布式事务的第一部分执行不需要考虑第二部分事务的结果。
 
-A事务不关心B事务的结果，只需要保证prepared消息在broker上被正确处理
+分布式事务的特点：
 
-由MQ来保证将事务消息推送给相关的consumer消费。
+1、A事务(阶段一)执行时不考虑B事务（阶段二），只需要保证A事务与MQ上的prepared消息处理逻辑一致即可；
+
+2、由MQ提供的消息重试机制来保证事务消息一定会被consumer端消费到。
+
+3、B事务如果处理失败（几率比较小），可通过“人工介入”方式进行补偿处理。
