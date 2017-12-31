@@ -1,4 +1,5 @@
 ## zookeeper的功能与底层关键原理
+![Image of zkcomponents](https://github.com/clonegod/tools/blob/master/images/zkcomponents.jpg)
 >PAXOS 算法 - 一种基于消息传递的一致性算法
 >
 >ZAB 原子消息广播 - 分布式环境中保证数据的一致性。
@@ -59,7 +60,6 @@ zookeeper以简单的树形结构（znode节点树）来组织内部数据，也
 因此，在读操作为主的场景下性能非常优秀。在Jmeter压力测试下（100%读请求场景），结果约12W QPS。
 
 
-![Image of zkcomponents](https://github.com/clonegod/tools/blob/master/images/zkcomponents.jpg)
 
 
 
