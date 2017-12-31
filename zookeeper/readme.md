@@ -1,130 +1,50 @@
-# Zookeeper 集群搭建
+## zookeeper的功能与底层关键原理
+>PAXOS 算法 - 一种基于消息传递的一致性算法
+>
+>ZAB 原子消息广播 - 分布式环境中保证数据的一致性
 
-#
+zookeeper是一个高可用的分布式管理与协调框架，基于ZAB算法(原子消息广播协议)的实现。
 
-## 集群规划
-	操作系统：Centos7
-	Java版本：JDK_1.8.0_144
-	zookeeper版本：3.4.10
-		3个节点：
-		node1 192.168.1.201
-		node2 192.168.1.202
-		node3 192.168.1.203
+也就是基于这样的特性，使得zookeeper成为了解决分布式一致性问题的利器！
 
-## 准备工作（3个节点）
-	- 关闭防火墙
-		systemctl disable firewalld
-	- 安装JDK
-		/usr/local/java
-	- 配置HOSTNAME
-		vi /etc/hosts
-			192.168.1.201           node1.clonegod.com      node1
-			192.168.1.202           node2.clonegod.com      node2
-			192.168.1.203           node3.clonegod.com      node3
-		vi /etc/sysconfig/network
-			HOSTNAME=node1.clonegod.com
-	- 创建用户（可选）
-		groupdadd hadoop
-		useradd -g hadoop hadoop
-		passwd hadoop
-	- ssh免密（可选）
-		ssh-keygen -t rsa -f ~/.ssh/id_rsa
-		ssh-copy-id -i ~/.ssh/id_rsa.pub hadoop@192.168.1.201
-		ssh-copy-id -i ~/.ssh/id_rsa.pub hadoop@192.168.1.202
-		ssh-copy-id -i ~/.ssh/id_rsa.pub hadoop@192.168.1.203
+该框架能够很好的保证分布式环境中数据的一致性。
 
- 
-	
-## 安装zookeeper-3.4.10
-### 下载、解压、创建软连接
-	cd /usr/local/software
-	wget https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/stable/zookeeper-3.4.10.tar.gz
-	tar -xzvf zookeeper-3.4.10.tar.gz -C /usr/local
-	cd /usr/local
-	ln -s zookeeper-3.4.10 zookeeper
+#### 顺序一致性
+从一个客户端发起的事务请求，最终会严格的按照其发起的顺序被应用到zookeeper集群中。
+#### 原子性
+所有事务请求的处理结果，在整个集群的所有机器上的应用情况是一致的。
 
-### 配置环境变量
-	vi /etc/profile.d/zookeeper.sh 
-		export ZOOKEEPER_HOME=/usr/local/zookeeper
-		export PATH=$ZOOKEEPER_HOME/bin:$PATH
-	source /etc/profile
-	which zkServer.sh
+要么整个集群所有机器都成功应用了某一事务，要么都没有应用。
 
-### 配置zookeeper（node1-192.168.1.201）
-首先，在192.168.1.201节点完成配置，然后再将zookeeper复制到其它节点。
-##### 1、创建数据存储目录、日志目录
-	mkdir -p /usr/local/zookeeper/zkData 
-	mkdir -p /usr/local/zookeeper/zkData/logs	
+一定不会出现部分机器应用了事务，而另一部分没有应用的情况发生。
 
-##### 2、配置zoo.cfg
-	cd /usr/local/zookeeper/conf
-	cp zoo_sample.cfg zoo.cfg
-	vi zoo.cfg
-		# The number of milliseconds of each tick
-		tickTime=2000
-		
-		# The number of ticks that the initial synchronization phase can take
-		initLimit=10
-		
-		# The number of ticks that can pass between
-		# sending a request and getting an acknowledgement
-		syncLimit=5
-		
-		# the directory where the snapshot is stored.
-		# do not use /tmp for storage, /tmp here is just example sakes.
-		dataDir=/usr/local/zookeeper/zkData
-		dataLogDir=/usr/local/zookeeper/zkData/logs
-		
-		# the port at which the clients will connect
-		clientPort=2181
-		
-		# the maximum number of client connections.
-		# increase this if you need to handle more clients
-		#maxClientCnxns=60
-				
-		server.1=node1:2888:3888
-		server.2=node2:2888:3888
-		server.3=node3:2888:3888
+#### 单一视图
+无论客户端连接到zk集群中的哪个节点上，其看到的服务端数据模式都是一致的。
 
-##### 3、配置zk实例在集群中的唯一身份标识
-	cd /usr/local/zookeeper
-	echo 1 > zkData/myid
+#### 可靠性
+一旦服务器成功应用了某个事务，并完成了对客户端的响应，那么该事务所引起的服务器状态将被一直保留下来。除非有另一个事务对其进行了修改。
 
-### 分发zookeeper到其它节点
-	cd  /usr/local # 先切换到父目录，再使用rsync命令
-	rsync -avzR zookeeper-3.4.10/ node2:/usr/local
-	rsync -avzR zookeeper-3.4.10/ node3:/usr/local
+#### 实时性
+通常所说的实时性指的是一旦事务被成功的应用了，那么客户端就能立刻从服务器上获取到变更后的数据。
 
-### 配置zk集群的其它节点（node2 - 192.168.1.202）
-	ln -s /usr/local/zookeeper-3.4.10 /usr/local/zookeeper
-	cd /usr/local/zookeeper
-	echo 2 > zkData/myid 
+zookeeper仅仅能保证在一段时间内，客户端最终一定能从服务器读取到最新的数据。 
+
+###### 特别说明
+zk适合存储少量的数据信息，比如配置信息、服务注册信息、发布订阅的信息等。
+
+## zookeeper集群环境搭建与配置说明
+>3节点 leader选举: leader + follower
+
+## zookeeper客户端
+>zkClient
+>
+>curator框架
+
+## zookeeper应用场景实例
+>配置管理
+>
+>分布式锁
 	
 
-### 配置zk集群的其它节点（node3 - 192.168.1.203）	
-	ln -s /usr/local/zookeeper-3.4.10 /usr/local/zookeeper
-	cd /usr/local/zookeeper
-	echo 3 > zkData/myid
-
-## 启动zk集群
-	# 分别在3个节点上启动zookeeper
-	/usr/local/zookeeper/bin/zkServer.sh start
-
-## 检查zk集群状态
-	# 分别在3个节点上查看zookeeper的状态
-	/usr/local/zookeeper/bin/zkServer.sh status
-	# 192.168.1.201
-		Mode: follower
-	# 192.168.1.202
-		Mode: follower
-	# 192.168.1.203
-		Mode: leader
-
-## 使用zkCli.sh连接zookeeper
-	# 在任意zk节点上登陆都可以
-	/usr/local/zookeeper/bin/zkCli.sh
-	# 输出
-		[zk: localhost:2181(CONNECTED) 0] ls /
-		[zookeeper]
 
 	

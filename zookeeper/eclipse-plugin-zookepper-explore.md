@@ -13,7 +13,7 @@ Step 3. 选择插件并安装
 
 
 
-### 运行
+### 启用zk
 Step 1. 在 Eclipse  菜单打开Window->Show View->Other…->ZooKeeper 3.2.2
 
 
