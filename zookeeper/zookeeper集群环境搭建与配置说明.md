@@ -1,4 +1,7 @@
-# Zookeeper 集群搭建
+## zookeeper集群环境搭建与配置说明
+>3节点 leader选举: leader + follower
+
+![Image of zkservice](https://github.com/clonegod/tools/blob/master/images/zkservice.jpg)
 
 #
 
