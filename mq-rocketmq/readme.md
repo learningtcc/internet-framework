@@ -247,3 +247,8 @@
 
 
 ## RocketMQ 管理员操作集群
+	# 切换到rocketmq的bin目录
+	cd /usr/local/rocketmq/bin
+
+	# 查看cluster集群状态
+	sh mqadmin clusterlist -m -n 192.168.1.201:9876;192.168.1.202:9876

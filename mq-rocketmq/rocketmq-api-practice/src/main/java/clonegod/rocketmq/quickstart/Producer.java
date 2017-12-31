@@ -47,7 +47,7 @@ public class Producer {
         // com.alibaba.rocketmq.client.exception.MQClientException: No name server address, please set it.
         producer.setNamesrvAddr("192.168.1.201:9876;192.168.1.202:9876");
         
-        producer.setRetryTimesWhenSendFailed(10); // producer重试消息发送
+        producer.setRetryTimesWhenSendFailed(10); // producer重试消息发送的次数
         
         producer.start();
         
