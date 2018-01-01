@@ -1,7 +1,6 @@
 package clonegod.zkclient.base;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.I0Itec.zkclient.ZkClient;
 import org.I0Itec.zkclient.ZkConnection;
@@ -39,7 +38,7 @@ public class ZkClientBase {
 		
 		//3. 更新和判断节点是否存在
 		zkc.writeData("/super/c1", "c1新内容");
-		System.out.println(zkc.readData("/super/c1"));
+		System.out.println(zkc.readData("/super/c1")); 
 		System.out.println(zkc.exists("/super/c1"));
 		
 		//4.递归删除/super内容

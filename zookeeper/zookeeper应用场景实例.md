@@ -50,8 +50,29 @@ zookeeper是一个典型的发布/订阅模式的分布式系统。
 
 比如使用zookeeper配置不同类型的日志分别从节点的哪个目录进行采集。
 
-### 分布式锁
+### 分布式锁 - Curator实现
+java提供synchronized或者ReentrantLock来解决同一个JVM虚拟机内部多线程的并发同步问题。
 
-### 队列管理
+分布式锁则是解决不同JVM进程之间的线程同步问题！
 
-### 分布式场景下获取全局唯一时间戳
+Curator提供了**InterProcessMutex**来解决分布式锁的问题。
+
+
+### 分布式场景下进行全局计数器 - Curator实现
+Curator提供了**DistributedAtomicInteger**来解决分布式系统全局计数器的功能。
+
+
+### 分布式场景下的Barrier - Curator实现
+Curator提供了**DistributedBarrier**来实现分布式系统间线程的协调控制功能。
+	DistributedBarrier 同时启动任务
+	DistributedDoubleBarrier 同时启动任务，同时结束任务
+
+
+### Curator提供的分布式队列
+	DistributedQueue
+	DistributedDelayQueue
+	DistributedPriorityQueue
+
+
+### 分布式场景下生成全局唯一ID
+
