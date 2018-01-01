@@ -36,6 +36,18 @@ zookeeper能保证在一段时间内，客户端最终一定能从服务器读�
 ###### 特别说明
 zk适合存储少量的数据信息，比如配置信息、服务注册信息、发布订阅的信息等。
 
+
+## zookeeper的组成
+zookeeper根据身份分为3种类型： **Leader，Follower，Observer**
+
+其中，Follower和Observer又称为Learner（学习者）。
+
+	Leader：负责处理客户端的write请求；
+	Follower：负责处理客户端的read请求，参数Leader选举；
+	Observer：特殊的“Follower”，不参与选举，专门处理客户端的read请求，提高zk集群整体的读取速度。
+	
+
+
 ## zookeeper的特性
 **简单的数据结构**
 
