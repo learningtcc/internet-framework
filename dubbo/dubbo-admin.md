@@ -12,10 +12,10 @@
 	2、而dubbo-admin，需要使用dubbo-2.5.6以上版本Tomcat才能正常启动，且需要JDK1.8。
 	
 	如果使用dubbo-admin其它旧版本，就会报异常：
-	spring容器启动时，FileNotFoundException: /WEB-IN/applicationContext.xml，
+	spring容器启动时，FileNotFoundException: /WEB-INF/applicationContext.xml，
 	这个问题很是纠结啊！！！
 
-	因此，dubbo-admin使用最新版本，且使用JDK1.8，而项目开发照样使用JDK1.7即可。
+	因此，dubbo-admin可以使用最新版本，且使用JDK1.8，而项目开发照样使用JDK1.7即可。
 	---提示：可配置Tomcat使用指定的JDK版本，在catalina.sh中配置JAVA_HOME。
 	
 
