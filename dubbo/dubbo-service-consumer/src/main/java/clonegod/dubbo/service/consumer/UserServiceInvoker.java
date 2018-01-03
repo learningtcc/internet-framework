@@ -13,7 +13,7 @@ public class UserServiceInvoker {
 		
 		// start spring container
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
-                new String[]{"META-INF/spring/dubbo-demo-consumer.xml"});
+                new String[]{"META-INF/spring/dubbo-service-consumer.xml"});
         context.start();
         
         // obtain proxy object for remote invocation
@@ -22,18 +22,18 @@ public class UserServiceInvoker {
         // execute remote invocation
         while(true) {
         	for(int i = 1; i <= 3; i++) {
+        		System.out.println("\n-----------------------");
             	User user = userService.getById(i);
             	System.out.printf("invoker userService.getById, result = %s\n", user.toString());
             	
             	String ret = userService.sayHello(user.getName());
             	System.out.printf("invoker userService.sayHello, result = %s\n", ret);
             	
-            	System.out.println("-----------------------\n");
-            	Thread.sleep(1000);
+            	List<User> users = userService.getAllUsers();
+            	System.out.printf("invoker userService.getAllUsers, size=%s", users.size());
+            	Thread.sleep(3000);
             }
         
-	        List<User> users = userService.getAllUsers();
-	    	System.out.printf("invoker userService.getAllUsers, \nresult = %s", users);
 	    	
 	    	if(Math.random() > 1.0) {
 	    		break;

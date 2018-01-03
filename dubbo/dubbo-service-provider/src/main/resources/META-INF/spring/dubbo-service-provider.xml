@@ -5,7 +5,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
     
     <!-- 服务提供方应用名称，在dubbo管理页面上会显示每个服务是哪个应用发布出来的 -->
-    <dubbo:application name="dubbo-service-provider-clonegod"/>
+    <dubbo:application name="clonegod-service-provider-info"/>
     
     <!-- 使用zookeeper注册中心 -->
     <dubbo:registry protocol="zookeeper" 
@@ -13,10 +13,16 @@
     				client="curator"/>
     
     <!-- 配置协议类型: dubbo协议，服务监听端口号: 20880 -->
-    <dubbo:protocol name="dubbo" port="20880"/>
+    <dubbo:protocol name="dubbo" port="20880" host="192.168.1.105"/>
+    
+    <!-- 引用远程服务代理，由本地直接调用（代理服务） check属性表示是否先检查被引用的服务是否可用 -->
+    <dubbo:reference id="authenticationService" check="true" 
+    				interface="clonegod.dubbo.api.IAuthenticationService"/>
     
     <!-- 服务实现类 -->
-    <bean id="userService" class="clonegod.dubbo.service.impl.UserServiceImpl"/>
+    <bean id="userService" class="clonegod.dubbo.service.impl.UserServiceImpl">
+    	<property name="authenticationService" ref="authenticationService"/>
+    </bean>
     
     <!-- 发布的服务 -->
     <dubbo:service interface="clonegod.dubbo.api.IUserService" ref="userService"/>

@@ -1,7 +1,7 @@
 package clonegod.dubbo.service.provider;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class UserServiceProvider {
+public class AuthenticationServiceProvider {
     public static void main(String[] args) throws Exception {
     	
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
@@ -9,7 +9,7 @@ public class UserServiceProvider {
        
         context.start();
         
-        System.out.println("Dubbo User Service Provider Starting...");
+        System.out.println("Dubbo Authentication Service Provider Starting...");
         System.out.println("Press Any Key To Exit.");
         
         System.in.read(); // press any key to exit
