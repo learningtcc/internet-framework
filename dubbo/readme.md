@@ -5,20 +5,34 @@
 ### a high-performance, java based, open source RPC framework
 ![dubbo-architecture](https://github.com/clonegod/tools/blob/master/images/dubbo-architecture.png)
 
+## 服务组件
+### Registry 注册中心
+	- 提供服务注册，可基于zookeeper等分布式系统
+### Service Provider
+	- 对外暴露服务
+### Service Consumer
+	- 服务调用方
+### Admin 
+	- 运维管理与配置
+
+
+---------------------------------------------------------
+
+
 Dubbo是一个分布式服务框架，致力于提供高性能和透明化的RPC远程服务调用方案，以及SOA服务治理。
 
 简单的说，Dubbo就是一个远程服务调用的分布式框架。
 
 ### 核心功能：
-**1、远程通信**
+**1、远程通信 interface based remote call**
 
 提供对多种基于长连接的NIO框架的抽象，包括多种线程模型、序列化、以及“请求-响应”模式的信息交换方式。
 
-**2、集群容错**
+**2、集群容错和负载均衡 fault tolerance & load balancing**
 
 提供基于接口方法的透明远程过程调用，包括多种协议的支持、软负载均衡、失败容错、地址路由(配置服务对哪些客户端可见)、动态配置等集群支持。
 
-**3、自动发现**
+**3、自动服务注册与发现 automatic service registration & discovery**
 
 基于注册中心提供的目录服务，使得服务的调用方可以动态的查找服务提供方，使地址透明化，使服务提供方可以平滑增加或减少机器。
 
