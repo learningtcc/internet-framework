@@ -7,6 +7,19 @@
 
 ![RESTFul](https://github.com/clonegod/tools/blob/master/images/RESTFul.jpg)
 
+### Use HTTP methods explicitly
+[RESTful Web services: The basics](https://www.ibm.com/developerworks/library/ws-restful/index.html/)
+
+
+This basic REST design principle establishes a one-to-one mapping between create, read, update, and delete (CRUD) operations and HTTP methods. 
+
+According to this mapping:
+
+	To create a resource on the server, use POST.
+	To retrieve a resource, use GET.
+	To change the state of a resource or to update it, use PUT.
+	To remove or delete a resource, use DELETE.
+
 
 ## Server的API如何设计才满足RESTful要求?
 
