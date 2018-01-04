@@ -12,8 +12,8 @@
     				address="192.168.1.201:2181,192.168.1.202:2181,192.168.1.203:2181"
     				client="curator"/>
     
-    <!-- 配置协议类型: dubbo协议，服务监听端口号: 20880 -->
-    <dubbo:protocol name="dubbo" port="20880" host="192.168.1.105"/>
+    <!-- 配置协议类型: dubbo协议，服务监听端口号: 20882 -->
+    <dubbo:protocol name="dubbo" port="20882" host="192.168.1.103"/>
     
     <!-- 引用远程服务代理，由本地直接调用（代理服务） check属性表示是否先检查被引用的服务是否可用 -->
     <dubbo:reference id="authenticationService" check="true" 
@@ -25,6 +25,9 @@
     </bean>
     
     <!-- 发布的服务 -->
-    <dubbo:service interface="clonegod.dubbo.api.IUserService" ref="userService"/>
+    <dubbo:service interface="clonegod.dubbo.api.IUserService" ref="userService" 
+    		token="123456"
+    		cluster="failfast" retries="0"
+    		connections="100" />
     
 </beans>
