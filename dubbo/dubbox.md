@@ -2,6 +2,8 @@
 
 GitHub 链接: [dubbox](https://github.com/dangdangdotcom/dubbox)
 
+![dubbox-rest](https://github.com/clonegod/tools/blob/master/images/dubbox-rest.jpg)
+
 **dubbox新增特性**
 
 	1、 支持REST风格远程调用（HTTP + JSON/XML) - 基于非常成熟的JBoss RestEasy框架
@@ -55,4 +57,4 @@ GitHub 链接: [dubbox](https://github.com/dangdangdotcom/dubbox)
 	tail -f -n 300 logs/catalina.out
 
 ### 浏览器访问
-	http://localhost:8080/dubbo-admin
+	http://localhost:8080/dubbox-admin
